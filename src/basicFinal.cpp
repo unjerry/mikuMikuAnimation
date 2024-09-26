@@ -81,7 +81,7 @@ int main()
 
     // build and compile our shader zprogram
     // ------------------------------------
-    Shader ourShader("resources/shaders/7.3.camera.vs", "resources/shaders/7.3.camera.fs");
+    Shader ourShader(FileSystem::getPath("resources/shaders/7.3.camera.vs").c_str(), FileSystem::getPath("resources/shaders/7.3.camera.fs").c_str());
 
     // set up vertex data (and buffer(s)) and configure vertex attributes
     // ------------------------------------------------------------------

@@ -13,7 +13,7 @@ include_directories(${PROJECT_SOURCE_DIR}/glfw/include/)
 include_directories(${PROJECT_SOURCE_DIR}/glad-4.3/include/)
 include_directories(${PROJECT_SOURCE_DIR}/glm/)
 
-file(COPY ${PROJECT_SOURCE_DIR}/resources DESTINATION ${PROJECT_BINARY_DIR})
+# file(COPY ${PROJECT_SOURCE_DIR}/resources DESTINATION ${PROJECT_BINARY_DIR})
 
 add_subdirectory(glfw)
 add_library(glad ${PROJECT_SOURCE_DIR}/glad-4.3/src/glad.c)
