@@ -5,7 +5,6 @@
 
 #include <core/gmWindow.h>
 
-void framebuffer_size_callback(GLFWwindow *window, int width, int height);
 void processInput(GLFWwindow *window);
 
 // settings
@@ -48,12 +47,3 @@ void processInput(GLFWwindow *window)
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
 }
-
-// glfw: whenever the window size changed (by OS or user resize) this callback function executes
-// ---------------------------------------------------------------------------------------------
-// void framebuffer_size_callback(GLFWwindow *window, int width, int height)
-// {
-//     // make sure the viewport matches the new window dimensions; note that width and
-//     // height will be significantly larger than specified on retina displays.
-//     window.gl ->Viewport(0, 0, width, height);
-// }
