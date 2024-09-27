@@ -24,13 +24,13 @@ namespace gmWindow
         gmWindow(const gmWindowSpecification &spec = gmWindowSpecification());
         ~gmWindow();
         GLFWwindow *getWindow();
-        GladGLContext *getgl();
+        GladGLContext *getGl();
     };
     GLFWwindow *gmWindow::getWindow()
     {
         return window;
     }
-    GladGLContext *gmWindow::getgl()
+    GladGLContext *gmWindow::getGl()
     {
         return gl;
     }
@@ -78,6 +78,7 @@ namespace gmWindow
 
     gmWindow::~gmWindow()
     {
+        free(gl);
     }
 
 } // namespace gmWindow

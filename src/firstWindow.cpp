@@ -26,8 +26,8 @@ int main()
 
         // render
         // ------
-        window.getgl()->ClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-        window.getgl()->Clear(GL_COLOR_BUFFER_BIT);
+        window.getGl()->ClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+        window.getGl()->Clear(GL_COLOR_BUFFER_BIT);
 
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         // -------------------------------------------------------------------------------
