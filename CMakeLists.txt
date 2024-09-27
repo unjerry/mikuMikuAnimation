@@ -14,6 +14,7 @@ include_directories(${PROJECT_SOURCE_DIR}/include/)
 include_directories(${PROJECT_SOURCE_DIR}/glfw/include/)
 include_directories(${PROJECT_SOURCE_DIR}/glm/)
 include_directories(${PROJECT_SOURCE_DIR}/polyscope/include)
+include_directories(${PROJECT_SOURCE_DIR}/geometry-central/include)
 
 # build binarys
 add_subdirectory(glfw)
@@ -23,6 +24,7 @@ add_subdirectory("${GLAD_SOURCES_DIR}/cmake" glad_cmake)
 glad_add_library(gl REPRODUCIBLE MX API gl:core=4.3)
 
 add_subdirectory(polyscope)
+add_subdirectory("geometry-central")
 
 
 # build executable
@@ -36,5 +38,5 @@ add_executable(multiwin_mx src/multiwin_mx.cpp)
 target_link_libraries(multiwin_mx gl glfw)
 
 add_executable (polscoTest src/polscoTest.cpp)
-target_link_libraries(polscoTest polyscope)
+target_link_libraries(polscoTest polyscope "geometry-central")
 
