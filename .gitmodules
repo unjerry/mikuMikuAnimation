@@ -7,3 +7,6 @@
 [submodule "glad"]
 	path = glad
 	url = https://github.com/Dav1dde/glad.git
+[submodule "polyscope"]
+	path = polyscope
+	url = https://github.com/nmwsharp/polyscope.git
