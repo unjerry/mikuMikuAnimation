@@ -16,80 +16,13 @@ public:
     GladGLContext *gl;
     // constructor generates the shader on the fly
     // ------------------------------------------------------------------------
-    Shader(const char *vertexPath, const char *fragmentPath)
-    {
-        gl = (GladGLContext *)calloc(1, sizeof(GladGLContext));
-        if (!gl)
-        {
-            throw std::invalid_argument("Failed to create context");
-        }
-
-        int version = gladLoadGLContext(gl, glfwGetProcAddress);
-        std::cout << "Loaded OpenGL " << GLAD_VERSION_MAJOR(version) << "." << GLAD_VERSION_MINOR(version) << std::endl;
-        // 1. retrieve the vertex/fragment source code from filePath
-        std::string vertexCode;
-        std::string fragmentCode;
-        std::ifstream vShaderFile;
-        std::ifstream fShaderFile;
-        // ensure ifstream objects can throw exceptions:
-        vShaderFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
-        fShaderFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
-        try
-        {
-            // open files
-            vShaderFile.open(vertexPath);
-            fShaderFile.open(fragmentPath);
-            std::stringstream vShaderStream, fShaderStream;
-            // read file's buffer contents into streams
-            vShaderStream << vShaderFile.rdbuf();
-            fShaderStream << fShaderFile.rdbuf();
-            // close file handlers
-            vShaderFile.close();
-            fShaderFile.close();
-            // convert stream into string
-            vertexCode = vShaderStream.str();
-            fragmentCode = fShaderStream.str();
-        }
-        catch (std::ifstream::failure &e)
-        {
-            std::cout << "ERROR::SHADER::FILE_NOT_SUCCESSFULLY_READ: " << e.what() << std::endl;
-        }
-        const char *vShaderCode = vertexCode.c_str();
-        const char *fShaderCode = fragmentCode.c_str();
-        // 2. compile shaders
-        unsigned int vertex, fragment;
-        // vertex shader
-        vertex = gl->CreateShader(GL_VERTEX_SHADER);
-        gl->ShaderSource(vertex, 1, &vShaderCode, NULL);
-        gl->CompileShader(vertex);
-        checkCompileErrors(vertex, "VERTEX");
-        // fragment Shader
-        fragment = gl->CreateShader(GL_FRAGMENT_SHADER);
-        gl->ShaderSource(fragment, 1, &fShaderCode, NULL);
-        gl->CompileShader(fragment);
-        checkCompileErrors(fragment, "FRAGMENT");
-        // shader Program
-        ID = gl->CreateProgram();
-        gl->AttachShader(ID, vertex);
-        gl->AttachShader(ID, fragment);
-        gl->LinkProgram(ID);
-        checkCompileErrors(ID, "PROGRAM");
-        // delete the shaders as they're linked into our program now and no longer necessary
-        gl->DeleteShader(vertex);
-        gl->DeleteShader(fragment);
-    }
+    Shader(const char *vertexPath, const char *fragmentPath);
     // activate the shader
     // ------------------------------------------------------------------------
-    void use() const
-    {
-        gl->UseProgram(ID);
-    }
+    void use() const;
     // utility uniform functions
     // ------------------------------------------------------------------------
-    void setBool(const std::string &name, bool value) const
-    {
-        gl->Uniform1i(gl->GetUniformLocation(ID, name.c_str()), (int)value);
-    }
+    void setBool(const std::string &, bool) const;
     // ------------------------------------------------------------------------
     void setInt(const std::string &name, int value) const
     {
@@ -172,4 +105,73 @@ private:
         }
     }
 };
+Shader::Shader(const char *vertexPath, const char *fragmentPath)
+{
+    gl = (GladGLContext *)calloc(1, sizeof(GladGLContext));
+    if (!gl)
+    {
+        throw std::invalid_argument("Failed to create context");
+    }
+    int version = gladLoadGLContext(gl, glfwGetProcAddress);
+    std::cout << "Loaded OpenGL " << GLAD_VERSION_MAJOR(version) << "." << GLAD_VERSION_MINOR(version) << std::endl;
+    // 1. retrieve the vertex/fragment source code from filePath
+    std::string vertexCode;
+    std::string fragmentCode;
+    std::ifstream vShaderFile;
+    std::ifstream fShaderFile;
+    // ensure ifstream objects can throw exceptions:
+    vShaderFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
+    fShaderFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
+    try
+    {
+        // open files
+        vShaderFile.open(vertexPath);
+        fShaderFile.open(fragmentPath);
+        std::stringstream vShaderStream, fShaderStream;
+        // read file's buffer contents into streams
+        vShaderStream << vShaderFile.rdbuf();
+        fShaderStream << fShaderFile.rdbuf();
+        // close file handlers
+        vShaderFile.close();
+        fShaderFile.close();
+        // convert stream into string
+        vertexCode = vShaderStream.str();
+        fragmentCode = fShaderStream.str();
+    }
+    catch (std::ifstream::failure &e)
+    {
+        std::cout << "ERROR::SHADER::FILE_NOT_SUCCESSFULLY_READ: " << e.what() << std::endl;
+    }
+    const char *vShaderCode = vertexCode.c_str();
+    const char *fShaderCode = fragmentCode.c_str();
+    // 2. compile shaders
+    unsigned int vertex, fragment;
+    // vertex shader
+    vertex = gl->CreateShader(GL_VERTEX_SHADER);
+    gl->ShaderSource(vertex, 1, &vShaderCode, NULL);
+    gl->CompileShader(vertex);
+    checkCompileErrors(vertex, "VERTEX");
+    // fragment Shader
+    fragment = gl->CreateShader(GL_FRAGMENT_SHADER);
+    gl->ShaderSource(fragment, 1, &fShaderCode, NULL);
+    gl->CompileShader(fragment);
+    checkCompileErrors(fragment, "FRAGMENT");
+    // shader Program
+    ID = gl->CreateProgram();
+    gl->AttachShader(ID, vertex);
+    gl->AttachShader(ID, fragment);
+    gl->LinkProgram(ID);
+    checkCompileErrors(ID, "PROGRAM");
+    // delete the shaders as they're linked into our program now and no longer necessary
+    gl->DeleteShader(vertex);
+    gl->DeleteShader(fragment);
+}
+void Shader::use() const
+{
+    gl->UseProgram(ID);
+}
+void Shader::setBool(const std::string &name, bool value) const
+{
+    gl->Uniform1i(gl->GetUniformLocation(ID, name.c_str()), (int)value);
+}
 #endif

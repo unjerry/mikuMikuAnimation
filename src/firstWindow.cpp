@@ -14,11 +14,13 @@ int main()
     std::cout << "Hello Opengl" << std::endl;
 
     gmWindow::gmWindow window;
+    gmWindow::gmWindow window2;
 
     // render loop
     // -----------
-    while (!glfwWindowShouldClose(window.getWindow()))
+    while (!glfwWindowShouldClose(window.getWindow()) && !glfwWindowShouldClose(window2.getWindow()))
     {
+        glfwMakeContextCurrent(window.getWindow());
         // input
         // -----
         processInput(window.getWindow());
@@ -31,6 +33,21 @@ int main()
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         // -------------------------------------------------------------------------------
         glfwSwapBuffers(window.getWindow());
+        glfwPollEvents();
+
+        glfwMakeContextCurrent(window2.getWindow());
+        // input
+        // -----
+        processInput(window2.getWindow());
+
+        // render
+        // ------
+        window2.getGl()->ClearColor(0.2f, 0.3f, 0.9f, 1.0f);
+        window2.getGl()->Clear(GL_COLOR_BUFFER_BIT);
+
+        // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
+        // -------------------------------------------------------------------------------
+        glfwSwapBuffers(window2.getWindow());
         glfwPollEvents();
     }
 
