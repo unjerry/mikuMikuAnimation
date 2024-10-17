@@ -13,44 +13,39 @@ int main()
 {
     std::cout << "Hello Opengl" << std::endl;
 
-    gmWindow::gmWindow window;
-    gmWindow::gmWindow window2;
+    size_t windowNum = 20;
+    gmWindow::gmWindow window[windowNum];
+    bool shallClose = false;
 
     // render loop
     // -----------
-    while (!glfwWindowShouldClose(window.getWindow()) && !glfwWindowShouldClose(window2.getWindow()))
+    while (true)
     {
-        glfwMakeContextCurrent(window.getWindow());
-        // input
-        // -----
-        processInput(window.getWindow());
-
-        // render
-        // ------
-        window.getGl()->ClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-        window.getGl()->Clear(GL_COLOR_BUFFER_BIT);
-
-        // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
-        // -------------------------------------------------------------------------------
-        glfwSwapBuffers(window.getWindow());
-        glfwPollEvents();
-
-        glfwMakeContextCurrent(window2.getWindow());
-        // input
-        // -----
-        processInput(window2.getWindow());
-
-        // render
-        // ------
-        window2.getGl()->ClearColor(0.2f, 0.3f, 0.9f, 1.0f);
-        window2.getGl()->Clear(GL_COLOR_BUFFER_BIT);
-
-        // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
-        // -------------------------------------------------------------------------------
-        glfwSwapBuffers(window2.getWindow());
-        glfwPollEvents();
+        if (shallClose)
+        {
+            break;
+        }
+        for (size_t i = 0; i < windowNum; i++)
+        {
+            if (glfwWindowShouldClose(window[i].getWindow()))
+            {
+                shallClose = true;
+                break;
+            }
+            glfwMakeContextCurrent(window[i].getWindow());
+            // input
+            // -----
+            processInput(window[i].getWindow());
+            // render
+            // ------
+            window[i].getGl()->ClearColor(0.2f, 0.3f, 0.3f * i, 1.0f);
+            window[i].getGl()->Clear(GL_COLOR_BUFFER_BIT);
+            // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
+            // -------------------------------------------------------------------------------
+            glfwSwapBuffers(window[i].getWindow());
+            glfwPollEvents();
+        }
     }
-
     // glfw: terminate, clearing all previously allocated GLFW resources.
     // ------------------------------------------------------------------
     glfwTerminate();
